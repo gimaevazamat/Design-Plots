@@ -1,0 +1,1045 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.5cm, bottom=2cm}
+
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{xcolor,mdframed}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{color}
+%\usepackage{hyperref}
+
+\usepackage{fancyhdr}
+\pagestyle{empty}
+
+\usepackage[pdftex,
+		pdfauthor={Azamat Gimaev},
+		pdftitle={Design-Plots},
+		colorlinks=true,
+		linkcolor=blue,
+		filecolor=magenta,      
+		urlcolor=red
+	]{hyperref}
+
+
+\usepackage{etex}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{pgfplotstable}
+\usepackage{tikz}
+\usepackage{float}
+%\tikzset{/pgf/number format/.cd,1000 sep={,}}
+
+
+
+
+\usepackage{manual}
+
+\usepackage{listings}
+\lstnewenvironment{code}{\lstset{
+		backgroundcolor=\color{blue!20},
+		breaklines=true
+}}{}
+
+\def \gitref {https://github.com/gimaevazamat/Design-Plots}
+
+\begin{document}
+%\noindent v1.0 Актуальная версия \href{https://drive.google.com/file/d/1V7IAhQuAOamahaL_1-x6jXTo4OvkqJZa/view?usp=drive_link}{здесь}
+%\tableofcontents\newpage
+\begin{huge}
+	\begin{center}
+		\textbf{Графики в PGFPlots}\\
+		\small \textit{by Azamat Gimaev} \\
+		\large v0.1. Актуальная версия \href{\gitref}{здесь}
+	\end{center}
+\end{huge}
+\section{Введение}
+Более полный и качественный мануал по PGFPlots в \href{https://texdoc.org/serve/pgfplots/0}{книге}.
+\subsection{Необходимые пакеты}
+Установите в преамбуле следующие пакеты:
+\begin{code}
+	\usepackage{pgfplots}
+	\pgfplotsset{compat=newest}
+	\usepackage{pgfplotstable}
+	\usepackage{tikz}
+\end{code}
+\subsection{Основы принципа построения графиков в PGFPlots}
+PGFPlots базируется на основе TikZ, пакета для создания графических изображений в \LaTeX. Поэтому документация для этого пакета может вам понадобится, она находится на \href{https://texdoc.org/serve/pgfplots/0}{сайте}.
+\begin{figure}[H]
+\begin{subfigure}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[example]
+\begin{axis}
+	...
+\end{axis}
+\end{tikzpicture}
+\caption*{Рис. 1: Подпись}
+\end{subfigure}
+\begin{subfigure}[c]{0.5\linewidth}
+\begin{code}
+	\begin{figure}
+	\begin{tikzpicture}
+		\begin{axis}
+		...
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Подпись}
+	\end{figure}
+\end{code}
+\end{subfigure}
+\end{figure}
+\section{Оси}
+\subsection{Расположение осей}
+
+Расположение осей задается параметрами \verb|axis x line| и  \verb|axis y line| для горизонтальной и вертикальной осей соответственно. \verb|axis lines| задаст положения для двух осей сразу. \verb|*| в конце сделает ось без стрелки.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\verb|axis x line|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|top|, \verb*|bottom| \\ \hline
+		\verb|axis x line*|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|top|, \verb*|bottom| \\ \hline
+		\verb|axis y line|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|right|, \verb*|left|\\ \hline
+		\verb|axis y line*|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|right|, \verb*|left|\\ \hline
+		\verb|axis lines|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|right|, \verb*|left|\\ \hline
+		\verb|axis lines*|&\verb*|box|, \verb*|center|, \verb*|middle|, \verb*|none|, \verb*|right|, \verb*|left|\\ \hline
+		  
+	\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\begin{subfigure}[c]{0.55\linewidth}
+\centering
+\begin{tikzpicture}[example]
+	\begin{axis}[
+		axis lines = box,
+		ymin=-1, ymax=1,
+		xmin=0, xmax=1,
+		xlabel=$x$, ylabel=$y$,
+		]
+		...
+	\end{axis}
+\end{tikzpicture}
+\end{subfigure}
+\begin{subfigure}[c]{0.45\linewidth}
+\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			ymin=-1, ymax=1,
+			xmin=0, xmax=1,
+			xlabel=$x$, ylabel=$y$,
+		]
+		...
+		\end{axis}
+	\end{tikzpicture}
+\end{code}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis x line* = middle,
+				axis y line* = right,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				xlabel=$x$, ylabel=$y$
+				]
+				...
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis x line* = middle,
+			axis y line* = right,
+			ymin=-1, ymax=1,
+			xmin=0, xmax=1,
+			xlabel=$x$, ylabel=$y$
+			]
+			...
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis x line = bottom,
+				axis y line = left,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				xlabel=$x$, ylabel=$y$
+				]
+				...
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}[tabsize=3]
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis x line = bottom,
+			axis y line = left,
+			ymin=-1, ymax=1,
+			xmin=0, xmax=1,
+			xlabel=$x$, ylabel=$y$
+			]
+			...
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\subsection{Подписи к осям}
+По умолчанию расположение \verb|xlabel| и \verb|ylabel| задаются так:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = left,
+				xlabel=$x$, ylabel=$y$,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				label style={at={(ticklabel cs:0.5)},anchor=near ticklabel}
+			]
+				\addplot[blue] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel=$x$, ylabel=$y$,
+				label style={
+				at={(ticklabel cs:0.5)},
+				anchor=near ticklabel}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+Другие варианты:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = left,
+				xlabel=$x$, ylabel=$y$,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				xlabel style={at={(ticklabel* cs:1)},anchor=south, yshift=1.5ex},
+				ylabel style={at={(ticklabel cs:0.2)},rotate=-90,anchor=near ticklabel}
+				]
+				\addplot[blue] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel=$x$, ylabel=$y$,
+			xlabel style={
+				at={(ticklabel* cs:1)},
+				anchor=south, 
+				yshift=1.5ex},
+			ylabel style={
+				at={(ticklabel cs:0.3)},
+				rotate=-90,
+				anchor=near ticklabel}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = left,
+				xlabel=$x$, ylabel=$y$,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				xlabel style={at={(0.5, 0.5)}, scale=1.5},
+				ylabel style={at={(0.1, 0.8)},rotate=-90, color=red}
+				]
+				\addplot[blue] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel=$x$, ylabel=$y$,
+			xlabel style={
+				at={(0.5, 0.5)},
+				scale=1.5},
+			ylabel style={
+				at={(0.1, 0.8)},
+				rotate=-90,
+				color=red}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+
+%Подробнее про систему координат и подписи к осям можно найти на \href{https://texdoc.org/serve/pgfplots/0}{стр. 189}.
+\subsection{Метки на осях}
+Настройка расстояний между тиками:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=-1, ymax=1,
+				xmin=0, xmax=1,
+				xtick distance=0.1, ytick distance=0.25
+				]
+				\addplot[blue] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=-1, ymax=1,
+			xmin=0, xmax=1,
+			xtick distance=0.1,
+			ytick distance=0.25
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+Также можно вручную указать список основных тиков:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				xtick={0,20,40,60,80,100}, 
+				ytick={0,22,41,83,100}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			xtick={0,20,40,60,80,100}, 
+			ytick={0,22,41,83,100}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+
+При необходимости, можно задать и подписи к ним:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				xtick={0,20,40,60,80,100}, 
+				ytick={0,22,41,83,100},
+				yticklabels={$y_1$, $y_2$, $y_3$, $y_4$, $y_5$},	
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			xtick={0,20,40,60,80,100}, 
+			ytick={0,22,41,83,100},
+			yticklabels={$y_1$, $y_2$, 
+				$y_3$, $y_4$, $y_5$},
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+Дополнительные тики:
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				extra y ticks={33},	
+				extra y tick labels={
+					$y_{extra}$
+				}, 	
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+	\begin{code}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				extra y ticks={33},	
+				extra y tick labels={$y_{extra}$}, 
+				]
+				\addplot[blue] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{code}
+	\end{subfigure}
+\end{figure}
+\verb|minor tick num| задает количество промежуточных меток(minor) между основными (major):
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				minor tick num=2
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			minor tick num=2
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+Про настройки отображения чисел в PGF/TikZ более подробно показано \href{https://tikz.dev/math-numberprinting}{здесь}.
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = center,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=2,
+				xmin=0, xmax=2,
+				x tick label style={
+					/pgf/number format/fixed zerofill}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = center,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=2,
+			xmin=0, xmax=2,
+			x tick label style={
+				/pgf/number format/fixed zerofill}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = center,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=2,
+				xmin=0, xmax=2,
+				xticklabel style={
+					/pgf/number format/fixed zerofill,
+					 /pgf/number format/precision=4},
+				yticklabel style={/pgf/number format/.cd,
+					frac, frac whole=false,
+					frac denom=2}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = center,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=2,
+			xmin=0, xmax=2,
+			xticklabel style={
+				/pgf/number format/fixed zerofill,
+				/pgf/number format/precision=4},
+			yticklabel style={
+				/pgf/number format/.cd,
+				frac, frac whole=false,
+				frac denom=2}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+
+\subsection{Сетка}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				minor y tick num=2,
+				minor x tick num=1,
+				grid=major,
+				grid style={}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			minor y tick num=2,
+			minor x tick num=1,
+			grid=major,
+			grid style={}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				minor y tick num=2,
+				minor x tick num=1,
+				grid=minor,
+				grid style={dashed}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			minor y tick num=2,
+			minor x tick num=1,
+			grid=minor,
+			grid style={dashed}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=50,
+				minor y tick num=2,
+				minor x tick num=1,
+				extra y ticks = {50},
+				extra y tick labels = {$y_{extra}$},
+				grid=both,
+				major grid style={thick, red},
+				minor grid style={dotted, green}
+				]
+				\addplot[blue, domain=0:50] {x};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=50,
+			minor y tick num=2,
+			minor x tick num=1,
+			extra y ticks = {50},
+			extra y tick labels = {$y_{extra}$},
+			grid=both,
+			major grid style={thick, red},
+			minor grid style={dotted, green}
+			]
+			\addplot[blue] {x};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\section{Построение графика}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[
+				axis lines = box,
+				xlabel=$x$, ylabel=$y$,
+				ymin=0, ymax=100,
+				xmin=0, xmax=10,
+				minor y tick num=2,
+				minor x tick num=1,
+				grid=major,
+				grid style={}
+				]
+				\addplot[cyan, thick,
+					domain=0:50,
+					samples=300,					
+					]
+					{x^2};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = box,
+			xlabel=$x$, ylabel=$y$,
+			ymin=0, ymax=100,
+			xmin=0, xmax=10,
+			minor y tick num=2,
+			minor x tick num=1,
+			grid=major,
+			grid style={}
+			]
+			\addplot[color=cyan, thick
+				domain=0:50,
+				samples=300
+				] 
+				{x^2};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both]
+				\addplot coordinates {
+					(0,0)
+					(0.5,1)
+					(0.7,3)
+					(0.25,2)
+					(1,2)
+				};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both]
+			\addplot coordinates {
+				(0,0)
+				(0.5,1)
+				(0.7,3)
+				(0.25,2)
+				(1,2)
+			};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both]
+				\addplot+[only marks] table[x index=0,y index=1] {data.dat};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+			\begin{tikzpicture}
+				\begin{axis}[grid=both]
+					\addplot+[only marks] 
+						table[x index=0,y index=1]
+							{data.dat};
+				\end{axis}
+			\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+В примере выше использовано \verb|addplot+|, эта команда может автоматически подбирать параметры для графика. В приведенном примере синий цвет был выбран автоматический(\verb|addplot| отрисовала бы черные точки). Содержимое \verb|data.dat|:
+\begin{Verbatim}
+	20	153.2304311
+	30	195.4876924
+	60	212.5434827
+	70	236.7057698
+	80	248.2332984
+	90	260.7629998
+	100	267.2970842
+	110	281.3195285
+	10	113.9032286
+	15	129.3440994
+	20	170.5493006
+	25	178.1146819
+	35	198.7781254
+	45	198.1832362
+	55	205.1404073
+	60	230.743486
+	40	197.4683797
+	50	185.2274292
+\end{Verbatim}
+Вместо индексов \verb|[x index=0,y index=1]| можно использовать заголовки к столбцам. Например, \verb|[x=t, y=v]|, тогда \verb|data.dat| будет таким:
+\begin{Verbatim}
+	t 	v
+	20	153.2304311
+	30	195.4876924
+	...
+\end{Verbatim}
+Данные из \verb|.dat| файлов можно выводить сразу в табличку: 
+\begin{figure}[H]
+\begin{subfigure}{0.25\linewidth}
+	\begin{mdframed}[backgroundcolor=yellow!20,linecolor=yellow!20]
+\centering
+\pgfplotstabletypeset[
+column type=c,
+every head row/.style={before row=\hline,after row=\hline},
+every last row/.style={after row=\hline},
+every last column/.style={column type/.add={}{|}},
+every column/.style = {column type/.add={|}{}},
+columns/x/.style={
+	column name={$x$}, fixed zerofill, precision=1},
+columns/y/.style={
+	column name={$y(x)$}, fixed zerofill, precision=2}
+]{data.dat}
+\end{mdframed}
+\end{subfigure}
+\begin{subfigure}{0.75\linewidth}
+	\centering
+	\begin{code}
+	\pgfplotstabletypeset[
+	column type=c,
+	every head row/.style={before row=\hline,after row=\hline},
+	every last row/.style={after row=\hline},
+	every last column/.style={column type/.add={}{|}},
+	every column/.style = {column type/.add={|}{}},
+	columns/x/.style={
+		column name={$x$}, fixed zerofill, precision=1},
+	columns/y/.style={
+		column name={$y(x)$}, fixed zerofill, precision=2}
+	]{data.dat}
+\end{code}
+\end{subfigure}
+\end{figure}
+Для полной настройки стиля отображения таблицы используйте \href{https://pgfplots.sourceforge.net/pgfplotstable.pdf}{документацию}.
+\subsection{Погрешности на графике}
+Для отображения прямоугольников ошибок надо вставить параметр \verb|error bars/.cd|
+\begin{table}[H]
+	\centering
+
+	\begin{tabular}{|p{5cm}|l|p{7cm}|}
+		\hline
+		\verb|y dir=| или \verb|x dir=|&\verb|minus,plus,both|& задает направление ошибки: положительное, отрицательное, в обе стороны\\ \hline
+		\verb|y fixed=| или \verb|x fixed=|&число&задает величину постоянной абсолютной ошибки\\ \hline
+		\verb|y fixed relative=| или \verb|x fixed relative=|&число&задает величину постоянной относительной ошибки\\ \hline		
+		\verb|y explicit relative| или \verb|y explicit|&–&указывает на необходимость считать ошибки из файла. В параметре надо указать столбец с ошибками \verb|table[y error index=2]|\\ \hline
+	\end{tabular}
+\end{table}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both]
+				\addplot+[only marks]
+				plot[
+				error bars/.cd,
+				y dir=both,
+				y fixed relative=0.1, 
+				x dir = minus,
+				x fixed = 0.4
+				]
+				table[x index=0,y index=1] {data1.dat};
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both]
+			\addplot+[only marks]
+			plot[
+			error bars/.cd,
+			y dir=both,
+			y fixed relative=0.1,
+			x dir = minus,
+			x fixed = 0.4
+			]
+			table[x index=0,y index=1] 
+			{data.dat};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\subsection{Линия тренда}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both]
+				\addplot[only marks]
+				table[x index=0,y index=1] {data1.dat};
+				
+				\addplot[red, thin] table [
+				x =x,
+				y={create col/linear regression={y=y}}]
+				{data1.dat};
+				
+			\end{axis}
+
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both]
+			\addplot[only marks]
+			table[x index=0,y index=1]
+			{data.dat};
+			
+			\addplot[red, thin] table [
+			x=x,
+			y={create col/linear regression=
+				{y=y}}]
+			{data.dat};
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+Также можно получить коэффициенты фитирующей прямой следующими командами:\\ \verb|\pgfplotstableregressiona| и \verb|\pgfplotstableregressionb|\\
+Для автоматической записи уравнения фитирующей прямой в легенду графика можно использовать команду: 
+\[\verb|\addlegendentry{$\pgfmathprintnumber{\pgfplotstableregressiona} \cdot x$ + |\]
+\[\verb|+ $\pgfmathprintnumber{\pgfplotstableregressionb}$}|\]
+
+\subsection{Легенда графика}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both, legend style={fill = yellow!20}]
+				\addplot[only marks , mark = triangle*, mark options = {color=red,scale=1}]
+				table[x=H, y=m] {data2.dat};
+%				\addplot[red] table [x=H, y={create col/linear regression={y=m}}] {data2.dat};
+				
+				\addplot[only marks , mark = triangle*, mark options = {color=red!60,scale=1}]
+				table[x=H, y=m] {data3.dat};
+%				\addplot[red!60] table [x=H, y={create col/linear regression={y=m}}] {data3.dat};
+				
+				\legend{exp1, exp2}
+			\end{axis}
+			
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both, legend style={fill = yellow!20}]
+			\addplot[only marks,
+				mark = triangle*,
+				mark options = {color=red}]
+			table[x=X, y=Y] {data2.dat};
+			\addplot[only marks,
+				mark = triangle*,
+				mark options={color=red!60}]
+			table[x=X, y=Y] {data3.dat};
+			\legend{exp1, exp2}
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both,
+					legend style = {
+						fill=pink,
+						cells={anchor=east},
+						legend pos=outer north east,}]
+				\addplot[only marks , mark = triangle*, mark options = {color=red,scale=1}]
+				table[x=H, y=m] {data2.dat};
+				%				\addplot[red] table [x=H, y={create col/linear regression={y=m}}] {data2.dat};
+				
+				\addplot[only marks , mark = triangle*, mark options = {color=red!60,scale=1}]
+				table[x=H, y=m] {data3.dat};
+				%				\addplot[red!60] table [x=H, y={create col/linear regression={y=m}}] {data3.dat};
+				
+				\legend{exp1, exp2}
+			\end{axis}
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both,
+			legend style={
+				fill=pink,
+				cells={anchor=east},
+				legend pos=outer north east,}]
+		...
+		\end{axis}
+	\end{tikzpicture}
+		\end{code}
+	\end{subfigure}
+\end{figure}
+\subsection{Пины}
+\begin{figure}[H]
+	\begin{subfigure}[c]{0.55\linewidth}
+		\centering
+		\begin{tikzpicture}[example]
+			\begin{axis}[grid=both]
+				\addplot[only marks , mark = triangle*, mark options = {color=red}]
+				table[x=x,  y=y] {data4.dat}
+				coordinate [pos=0.25] (A)
+				coordinate [pos=0.4] (B)
+				;
+				
+				\draw (A) -| (B) node [pos=0.75,anchor=west]
+				{$k$};
+				\node [pin=200:Выброс] at (16, 3) {};
+
+			\end{axis}
+			
+		\end{tikzpicture}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.45\linewidth}
+		\begin{code}
+	\begin{tikzpicture}
+		\begin{axis}[grid=both]
+			\addplot[only marks,
+				mark = triangle*,
+				mark options={color=red}]
+			table[x=x,  y=y] {data4.dat}
+			coordinate [pos=0.25] (A)
+			coordinate [pos=0.4] (B)
+			;
+			\draw (A) -| (B) node
+				[pos=0.75,anchor=west] {$k$};
+			\node [pin=200:Выброс] 
+				at (16, 3) {};
+		\end{axis}
+	\end{tikzpicture}
+\end{code}
+	\end{subfigure}
+\end{figure}
+\end{document}
